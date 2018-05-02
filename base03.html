@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="example">
+  <p>Original message: "{{ message }}"</p>
+  <p>Computed reversed message: "{{ reversedMessage }}"</p>
+  <p>Computed reversed methods: "{{ reversedMethods() }}"</p>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  var app = new Vue({
+    el: "#example",
+    data: {
+      message: 'this is a test about computed property'
+    },
+    computed: {
+      reversedMessage: {
+        get: function () {
+          return this.message.split('').reverse().join('');
+        },
+        set: function (val) {
+          this.message = val.split('').reverse().join('');
+        }
+      }
+      /* ,reversedMessage: function () {   原始写法,只有getter
+       return this.message.split('').reverse().join('');
+       }*/
+    },
+    methods: {
+      reversedMethods: function () {
+        return this.message.split('').reverse().join('');
+      }
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="app1">
+  <span :id="'span-'+itemid">{{ message }}</span>
+  <div v-html="rowhtml"></div>
+  <button :disabled="enable">添加文本</button>
+  <div>{{ message.split('').reverse().join('') }}</div>
+  <div>{{ message | toupper | tolarge }}</div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  var app1 = new Vue({
+    el: "#app1",
+    data: {
+      itemid: "myid",
+      message: "show hello",
+      rowhtml: "<p style='color:red;'>htmlcontent</p>",
+      enable: true
+    },
+    filters: {
+      toupper: function (val) {
+        if (!val) {
+          return '';
+        }
+        val = val.toString();
+        return val.charAt(0).toUpperCase() + val.charAt(1).toUpperCase() + val.slice(2);
+      },
+      tolarge: function (value) {
+        return value + "___ with me";
+      }
+    }
+  })
+</script>
+</body>
+</html>

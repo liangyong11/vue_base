@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style rel="stylesheet">
+    .class1 {
+      color: #FF0000;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+<div id="example">
+  <div>{{content}}</div>
+  <div :class="className">class内容</div>
+  <div :style="styleObject">样式内容</div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  var app = new Vue({
+    el: "#example",
+    data: {
+      content: "this is a page about class and style",
+      className: {
+        class1: true
+      }
+    },
+    computed: {
+      styleObject: function () {
+        return {
+          color: "#FF00FF",
+          fontSize: "20px"
+        }
+      }
+    }
+  })
+</script>
+</body>
+</html>

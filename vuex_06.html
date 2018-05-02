@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<script src="vue-2.4.2.js"></script>
+<script src="vuex-2.3.1.js"></script>
+<script>
+  const moduleA = {
+    namespaced: true,
+    state: {
+      name: "liangyong",
+      address: "chengdu"
+    },
+    getters: {
+      getAddress: (state, getters) => {
+        return state.address + " in china";
+      }
+    },
+    mutations: {
+      changeName: function (currentState, payload) {
+        currentState.name = payload.name;
+      }
+    },
+    actions: {
+      changeName: function (context, payload) {
+        return new Promise(function (resolve, reject) {
+          context.commit("changeName", payload);
+          console.log("changeName success");
+          resolve(context.state.name);
+        });
+      }
+    },
+    modules: {
+      a1: {
+        namespaced: true,
+        state: {
+          name: "a1_state",
+          address: "a1_address",
+          id: 1001
+        },
+        getters: {
+          getAddress: (currentState, getters, rootState, rootGetters) => {               //rootState对应的是整个store的state
+            return currentState.address + " in " + rootState.address + " and " + rootGetters.getId;
+          }
+        },
+        mutations: {
+          incrementId: function (currentState, payload) {
+            currentState.id += payload.number;
+          }
+        },
+        actions: {
+          incrementIdAction: context => {
+            return new Promise(function (resolve, reject) {
+              context.commit("incrementId", {
+                number: 100
+              });
+              console.log(context.state.id);
+              context.commit("changeAddress", null, {root: true});              //root:true 表示提交根节点的mutation
+              console.log(context.rootState.address);
+              context.dispatch("companyAction", {company: "ICBC"}, {root: true})
+                .then(function () {
+                  console.log("this is ok");
+                });
+              //resolve(context);
+              resolve({rootState: context.rootState, rootGetters: context.rootGetters});
+            });
+          }
+        }
+      }
+    }
+  };
+  const moduleB = {
+    namespaced: true,
+    state: {
+      name: "liangy",
+      address: "sichuan"
+    },
+    getters: {
+      getAddress: (state, getters) => {
+        return state.address + " in china";
+      }
+    }
+  };
+  let vueStore = new Vuex.Store({
+    state: {
+      totalId: "001",
+      address: "china",
+      company: "chengkanyuan",
+      name: "chid"
+    },
+    getters: {
+      getId: function (state) {
+        return state.totalId;
+      }
+    },
+    mutations: {
+      changeCompany: (state, para) => {
+        state.company = para.company;
+      },
+      changeAddress: function (state) {
+        state.address = "huayang";
+      }
+    },
+    actions: {
+      companyAction: (context, para) => {
+        return new Promise(function (resolve, reject) {
+          context.commit("changeCompany", para);
+          console.log(context.state.company);
+          resolve();
+        })
+      }
+    },
+    modules: {
+      a: moduleA,
+      b: moduleB
+    }
+  });
+  console.log(vueStore.state.a.name);
+  console.log(vueStore.state.b.address);
+  vueStore.commit("a/changeName", {
+    name: "xiaoliang"
+  });
+  console.log(vueStore.state.a.name);
+  console.log(vueStore.getters["a/getAddress"]);
+  vueStore.dispatch("a/changeName", {
+    name: "jeffrey liang"
+  }).then(function (lastName) {
+    console.log("lastName:" + lastName);
+  });
+  console.log(vueStore.getters["a/a1/getAddress"]);
+  vueStore.dispatch("a/a1/incrementIdAction")
+    .then(function (result_data) {
+      console.log(result_data.rootState.address);
+      console.log(result_data.rootGetters.getId);
+    });
+</script>
+</body>
+</html>

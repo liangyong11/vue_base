@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style rel="stylesheet">
+    .router-link-active {
+      color: #FF0000;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <h3>Hello Vue-Router---嵌套关系</h3>
+  <p>
+    <router-link to="/person/3">person---3</router-link>
+    <br>
+    <router-link to="/person/4/add" replace>person---4---add</router-link>
+    <br>
+    <router-link to="/person/5/update/6">person---5---update---6</router-link>
+  </p>
+  <router-view></router-view>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  var personComponent = {
+    template: "<div class='person'><span>person {{$route.params.id}}</span><br><router-view></router-view></div>"
+  };
+  var defaultComponent = {
+    template: "<div class='home'>default content</div>"
+  }
+  var addComponent = {
+    template: "<div class='add'>add content</div>"
+  };
+  var updateComponent = {
+    template: "<div class='update'>update content {{$route.params.name}}</div>"
+  }
+
+  const current_routes = [
+    {
+      path: '/person/:id',
+      component: personComponent,
+      children: [
+        {
+          path: "",
+          component: defaultComponent
+        }, {
+          path: "add",
+          component: addComponent
+        }, {
+          path: "update/:name",
+          component: updateComponent
+        }
+      ]
+    }
+  ]
+
+  const current_router = new VueRouter({
+    routes: current_routes
+  })
+
+  var app = new Vue({
+    router: current_router
+  }).$mount('#container')
+</script>
+</body>
+</html>

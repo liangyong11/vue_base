@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="app">
+  <input type="checkbox" id="chk1" v-model="checked">
+  <label for="chk1">{{checked}}</label>
+  <div>
+    <input type="checkbox" id="java" value="java" v-model="checkedNames">
+    <label for="java">java</label>
+    <input type="checkbox" id="javascript" value="javascript" v-model="checkedNames">
+    <label for="javascript">javascript</label>
+    <input type="checkbox" id="python" value="python" v-model="checkedNames">
+    <label for="python">python</label>
+  </div>
+  <span>result:--->{{checkedNames}}</span>
+  <div>
+    <input type="radio" id="one" value="One" v-model="picked">
+    <label for="one">One</label>
+    <br>
+    <input type="radio" id="two" value="Two" v-model="picked">
+    <label for="two">Two</label>
+    <br>
+    <span>Picked: {{ picked }}</span>
+  </div>
+  <div>
+    <select v-model="selected">
+      <option disabled value="">请选择</option>
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+    </select>
+    <span>Selected: {{ selected }}</span>
+  </div>
+  <input id="t1" type="checkbox" v-model="toggle" :true-value="truevalue" :false-value="falsevalue">
+  <label for="t1">{{toggle}}</label>
+  <div>
+    <input id="r1" type="radio" v-model="radiovalue" :value="a">
+    <label for="r1">{{radiovalue}}</label>
+  </div>
+  <select v-model="selectvalue">
+    <option :value="{ number: 123 }">123</option>
+    <option :value="optionvalue">abc</option>
+  </select>
+  <span>value--->{{selectvalue}}</span>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  var app = new Vue({
+    el: "#app",
+    data: {
+      checked: false,
+      checkedNames: [],
+      picked: ""
+      //picked: "One"
+      , selected: ""
+      , toggle: ""
+      , radiovalue: ""
+      , selectvalue: null
+    },
+    computed: {
+      truevalue: function () {
+        return "isTrue";
+      },
+      falsevalue: function () {
+        return "isFalse";
+      },
+      a: function () {
+        return {
+          text: "radio123"
+        };
+      },
+      optionvalue: function () {
+        return {str: 'abcd'};
+      }
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <h3>{{vuex_data.name}}---{{vuex_data.address}}</h3>
+  <p>
+    <button @click="newAddress('华阳')">改变地址</button>
+  </p>
+  <h3>{{dataName}}--->{{vuex_data.version}}</h3>
+  <p>
+    <button @click="addVersion">添加版本</button>
+    <button @click="changeVersion(10)">快速添加</button>
+  </p>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vuex"></script>
+<script>
+  const CHANGE_VERSION_MUTATION = "changeVersion";
+  let vueStore = new Vuex.Store({
+    state: {
+      vuex_data: {
+        name: "vuex",
+        version: 2,
+        address: "成都"
+      }
+    },
+    getters: {
+      dataName: state => {
+        return state.vuex_data.name;
+      }
+    },
+    mutations: {
+      addVersion: function (state) {
+        state.vuex_data.version++;
+      },
+      [CHANGE_VERSION_MUTATION]: (state, payload) => {
+        state.vuex_data.version += payload.count;
+      },
+      setAddress(state, payload){
+        state.vuex_data.address = payload.address;
+      }
+    }
+  });
+  let app = new Vue({
+    el: "#container",
+    store: vueStore,
+    computed: {
+      ...Vuex.mapState(
+        ["vuex_data"]
+      ),
+      ...Vuex.mapGetters(
+        ["dataName"]
+      )
+    },
+    methods: {
+      newAddress: function (_address) {
+        this.$store.commit("setAddress", {
+          address: _address
+        })
+      },
+      /*
+       addVersion(){
+       this.$store.commit("addVersion");
+       },
+       */
+      ...Vuex.mapMutations([
+        "addVersion"
+      ]),
+      changeVersion: function (baseNumber) {
+        this.$store.commit(CHANGE_VERSION_MUTATION, {
+          count: baseNumber
+        })
+      }
+    }
+  })
+</script>
+</body>
+</html>

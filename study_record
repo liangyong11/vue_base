@@ -1,0 +1,23 @@
+元素属性绑定简写(v-bind：title  => :title)
+元素事件绑定简写(v-on:click   =>  @click)
+子组件定义的props用于接收父组件传值过来的属性,在父组件中一般用绑定方式实现传值( :childProperty="currentProperty" )
+computed里面定义的属性是基于data里面属性进行计算的结果,属性值不能自身赋值,只有改变data进行改变(监听只有getter,没有setter)
+如果需要给computed属性定义setter,需要自己手动代码定义
+computed属性是依赖于data内容的,data内容改变,computed属性跟随改变,(methods里面的方法是总是执行,更适合事件调用)
+computed与methods方法可以实现同样的效果,但是本质上一个是属性,一个是方法,属性是依赖改变,未改变时候直接返回,方法每次都会执行
+vue的watch方法可以监听某个属性的变化,执行回调函数,这和computed功能类似,但是computed是实时的,不适合用于异步和长时间的操作
+v-show与v-if区别：v-if是真正的条件渲染,满足条件才会渲染,v-show总是渲染,根据值进行display=>block none之间的切换
+v-for里面拥有对父作用域内所有属性的访问权,而不仅仅是for循环针对的数组内容
+vue的元素中绑定事件如@click中如果需要用到data中属性作为参数,方式如下:@click($data.count)
+vue.component注册组件时候,data必须为函数而不是属性
+父子组件通信方式:props down and  events up 父组件通过props向子组件传递属性值,子组件通过events向父组件发消息
+组件绑定模式<child message="hello">直接字符串赋值 <child :message="parent_message">绑定属性
+子组件不应该在内部方法中改变props里的属性值,父组件更新时候,子组件会自动更新
+子组件要将父组件的数据作为内部使用,可以定义一个data或者computed属性进行设置
+组件模板可以使用特有的模板格式:<script type="text/x-template" id="template-name">,一般用于子组件
+vue不允许动态添加根级响应式属性,因此需要在初始化的声明里面预先定义
+slot的使用中,子组件<slot name="slot_name">,父组件中<div slot="slot_name">进行引用
+子组件和父组件都可以通过render函数构造模板,在有render函数的情况下,template内容将自动失效,外层的根节点需要有el元素绑定
+render函数三个参数(0:tag,1:{},2:[]),在对象配置中,props可以用于绑定,如(level:this.level),接受当前组件的data computed methods方式返回
+render函数可以完全替换原有的子组件模板和父组件模板,具体内容可以参考senior01<----->senior04部分,传值方面内容非常详细
+router的路由和子路由都拥有同一个名称的参数时(比如id),会以路径的后面id值为标准来重写上级参数,因此会造成问题,所以定义子路由时,参数名必须与父路由不相同

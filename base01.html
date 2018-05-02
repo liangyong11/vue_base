@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="app">
+  <span :id="itemid">{{ message }}</span>
+</div>
+<div id="app2">
+  <span :title="message">
+    鼠标悬停几秒钟查看此处动态绑定的提示信息！
+  </span>
+</div>
+<div id="app-3">
+  <p v-if="seen">现在你看到我了</p>
+</div>
+<div id="app-4">
+  <ol>
+    <li v-for="todo in todos">
+      {{ todo.text }}
+    </li>
+  </ol>
+</div>
+<div id="app5">
+  <p>{{ message }}</p>
+  <button @click="reverseMessage">逆转消息</button>
+</div>
+<div id="app6">
+  <p>{{message}}</p>
+  <input v-model="message" type="text">
+</div>
+<div id="app7">
+  <ol>
+    <my-li v-for="item in items"
+           :obj="item"
+           :keyid="item.id">
+    </my-li>
+  </ol>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script>
+  var app = new Vue({
+      el: '#app',
+      data: {
+          message: 'Hello Vue!',
+          itemid: 'v1'
+      }
+  })
+  var app2 = new Vue({
+    el: '#app2',
+    data: {
+      message: '页面加载于 ' + new Date()
+    }
+  })
+  var app3 = new Vue({
+    el: '#app-3',
+    data: {
+      seen: true
+    }
+  })
+  var app4 = new Vue({
+    el: "#app-4",
+    data: {
+      todos: [
+        {text: 'javascript'},
+        {text: 'java'},
+        {text: 'C#'},
+        {text: 'python'},
+      ]
+    }
+  })
+  var app5 = new Vue({
+    el: "#app5",
+    data: {
+      message: "我们的测试消息"
+    },
+    methods: {
+      reverseMessage: function () {
+        this.message = this.message.split('').reverse().join('');
+      }
+    }
+  })
+  var app6 = new Vue({
+    el: "#app6",
+    data: {
+      message: 'hello'
+    }
+  })
+
+  Vue.component("my-li", {
+    props: ["obj", "keyid"],
+    template: "<li :id='keyid'>{{obj.name}}</li>"
+  });
+  var app7 = new Vue({
+    el: "#app7",
+    data: {
+      items: [
+        {id: "id1", name: "liangy"},
+        {id: "id2", name: "liangyong"},
+        {id: "id3", name: "ly"},
+        {id: "id4", name: "lyong"}
+      ],
+      msg: 'abcd'
+    }
+  })
+  app7.$watch("msg", function (newval, oldval) {
+    console.info(newval);
+    console.info(oldval);
+  })
+</script>
+</body>
+</html>

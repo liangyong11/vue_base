@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <h3>VueRouter--命名路由</h3>
+  <div>
+    <router-link :to="{name:'person',params:{id:5}}">person---5</router-link>
+    <br>
+    <button id="btn1" @click="newAddRoute">person---2---add</button>
+    <br>
+    <!-- 由于person路由和下属delete路由的参数都是id,会重叠造成person下面的id设置为60-->
+    <router-link to="/person/50/delete/60">person---50---delete---60</router-link>
+    <br>
+    <router-link :to="{name:'add',params:{id:100}}">person---100---add</router-link>
+    <br>
+    <button id="btn2">person---10---update---20</button>
+  </div>
+  <router-view></router-view>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  const personComponent = {
+    template: "<div><span>person {{$route.params.id}}</span><br><router-view></router-view></div>"
+  };
+  const defaultComponent = {
+    template: "<div class='home'>default content</div>"
+  };
+  const addComponent = {
+    template: "<div>add content</div>"
+  };
+  const updateComponent = {
+    template: "<div>update content-->{{$route.params.name}}</div>"
+  };
+  const deleteComponent = {
+    template: "<div>delete content===>{{$route.params.id}}</div>"
+  };
+  var current_routes = [
+    {
+      name: "person",
+      path: "/person/:id",
+      component: personComponent,
+      children: [
+        {
+          name: "default",
+          path: "",
+          component: defaultComponent
+        },
+        {
+          name: "add",
+          path: "add",
+          component: addComponent
+        },
+        {
+          name: "update",
+          path: "update/:name",
+          component: updateComponent
+        }, {
+          name: "delete",
+          path: "delete/:id",
+          component: deleteComponent
+        }
+      ]
+    }
+  ]
+  var current_router = new VueRouter({
+    routes: current_routes
+  });
+  var app = new Vue({
+    router: current_router,
+    methods: {
+      newAddRoute: function () {
+        //this.$router.push({name: "add", params: {id: 2}});
+        current_router.push({name: "add", params: {id: 2}});
+      }
+    }
+  }).$mount("#container");
+
+  var btn1 = document.querySelector("#btn1"), btn2 = document.querySelector("#btn2");
+  /*btn1.onclick = function () {
+   current_router.push({name: "add", params: {id: 2}});
+   }*/
+  btn2.onclick = function () {
+    current_router.push({name: "update", params: {id: 10, name: 20}});
+  }
+</script>
+</body>
+</html>

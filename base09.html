@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <app-layout :content="text" @parent-event="currentEvent">
+    <h3 slot="header">这是一个slot的测试例子</h3>
+    <div slot="main">
+      其他的内容是主要区域
+    </div>
+    <div slot="footer">
+      中国高科技公司版权所有
+    </div>
+  </app-layout>
+</div>
+<div id="div_parent">
+  <child-element>
+    <template slot="first" scope="property">
+      <span>from parent</span>
+      <br/>
+      <span>{{property.text}}</span>
+      <br/>
+      <span>{{property.url}}</span>
+    </template>
+    <template slot="second" scope="attr">
+      <span>from parent</span>
+      <br/>
+      <span>{{attr.text}}</span>
+      <br/>
+      <span>{{attr.age}}</span>
+    </template>
+  </child-element>
+</div>
+<div id="ul_parent">
+  <ul-element :items="mycontents">
+    <template slot="ul_slot" scope="myprop">
+      <li :id="myprop.id" class="myli">{{myprop.content}}</li>
+    </template>
+  </ul-element>
+</div>
+<script type="text/x-template" id="app-layout-template">
+  <div>
+    <header>
+      <slot name="header"></slot>
+      <button @click="addEvent">按钮</button>
+    </header>
+    <main>
+      <slot name="main"></slot>
+      <slot name="other">
+        没有内容分发时候显示的文字
+      </slot>
+    </main>
+    <footer>
+      <slot name="footer"></slot>
+    </footer>
+  </div>
+</script>
+<script type="text/x-template" id="template-child">
+  <div class="child-div">
+    <hr/>
+    <div>
+      <slot name="first" text="from child" url="www.google.com"></slot>
+    </div>
+    <hr/>
+    <div>
+      <slot name="second" text="from second" :age="19+11"></slot>
+    </div>
+  </div>
+</script>
+<script type="text/x-template" id="template-ul">
+  <div>
+    <hr/>
+    <ul>
+      <slot name="ul_slot" v-for="ele in items" :content="ele.content" :id="ele.id"></slot>
+    </ul>
+  </div>
+</script>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  Vue.component("app-layout", {
+    template: "#app-layout-template",
+    props: ["content"],
+    computed: {
+      word: function () {
+        return this.content;
+      }
+    },
+    methods: {
+      addEvent: function () {
+        console.log(this.word);
+        this.$emit("parent-event")
+      }
+    }
+  });
+  var app = new Vue({
+    el: "#container",
+    data: {
+      text: "文字数据"
+    },
+    methods: {
+      currentEvent: function () {
+        alert(this.$el.id);
+      }
+    }
+  });
+  Vue.component("child-element", {
+    template: "#template-child"
+  });
+  var app2 = new Vue({
+    el: "#div_parent"
+  });
+  Vue.component("ul-element", {
+    template: "#template-ul",
+    props:["items"]
+  })
+  var app3 = new Vue({
+    el: "#ul_parent",
+    computed: {
+      mycontents: function () {
+        return [
+          {id: "li_1", content: "内容1"},
+          {id: "li_2", content: "内容2"},
+          {id: "li_3", content: "内容3"},
+          {id: "li_4", content: "内容4"},
+        ]
+      }
+    }
+  })
+</script>
+</body>
+</html>

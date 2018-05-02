@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  Vue.component("child-content", {
+    props: ["items"],
+    render: function (h) {
+      var _this = this;
+      return h(
+        "ul",
+        {
+          attrs: {
+            id: "ul_name"
+          }
+        },
+        [
+          /*this.items.map(function (item) {
+           return _this.$scopedSlots.myslot({
+           content: item.content,
+           id: item.id
+           })
+           }
+           )*/
+          this.items.map(item => {
+            return this.$scopedSlots.myslot(
+              {
+                content: item.content,
+                id: item.id
+              }
+            )
+          })
+        ]
+      )
+    }
+  })
+  var container = new Vue({
+    el: "#container",
+    render: function (h) {
+      return h(
+        "child-content",
+        {
+          props: {
+            items: this.mycontents
+          },
+          scopedSlots: {
+            myslot: function (prop) {
+              return h(
+                "li",
+                {
+                  attrs: {
+                    id: prop.id
+                  },
+                  class: {
+                    myclass: true
+                  }
+                },
+                [
+                  prop.content
+                ]
+              )
+            }
+          }
+        }
+      )
+    },
+    computed: {
+      mycontents: function () {
+        return [
+          {id: "li_1", content: "内容1"},
+          {id: "li_2", content: "内容2"},
+          {id: "li_3", content: "内容3"},
+          {id: "li_4", content: "内容4"},
+        ]
+      }
+    }
+  })
+</script>
+</body>
+</html>

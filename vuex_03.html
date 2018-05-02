@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <ul>
+    <li v-for="student in myStudentList">{{student.id}} {{student.name}}</li>
+  </ul>
+  <div>{{myFirst.id}}--->{{myFirst.name}}</div>
+  <div>{{myFirstName}}</div>
+  <div>{{secondStudent.id}}--->{{secondStudent.name}}</div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vuex"></script>
+<script>
+  let vueStore = new Vuex.Store({
+    state: {
+      studentList: [
+        {id: 1001, name: "张三"},
+        {id: 1002, name: "李四"},
+        {id: 1003, name: "王五"}
+      ]
+    },
+    getters: {
+      first: state => {
+        return state.studentList[0];
+      },
+      firstName: function (state, getters) {
+        return getters.first.name;
+      }
+    }
+  });
+  var app = new Vue({
+    el: "#container",
+    store: vueStore,
+    computed: {
+      studentArray(){
+        return this.$store.state.studentList;
+      },
+      firstStudent: function () {
+        return this.$store.getters.first;
+      },
+      secondStudent: function () {
+        return this.$store.state.studentList[1];
+      },
+      ...Vuex.mapState({
+        myStudentList: "studentList"
+      }),
+      ...Vuex.mapGetters({
+        myFirst: "first",
+        myFirstName: "firstName"
+      })
+    }
+  })
+</script>
+</body>
+</html>

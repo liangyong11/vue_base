@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <h3>VueRouter--命名视图</h3>
+  <div>
+    <router-link to="/">默认</router-link>
+    <br>
+    <router-link :to="{name:'change'}">改变布局</router-link>
+  </div>
+  <router-view name="menu"></router-view>
+  <router-view name="content"></router-view>
+  <router-view name="footer"></router-view>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  const menuComponent = {
+    template: "<div>this is menucomponent</div>"
+  };
+  const contentComponent = {
+    template: "<div>this is contentcomponent</div>"
+  };
+  const footerComponent = {
+    template: "<div>this is footercomponent</div>"
+  };
+  var current_routes = [
+    {
+      name: "init",
+      path: "/",
+      components: {
+        default: menuComponent,
+        content: contentComponent,
+        footer: footerComponent
+      }
+    },
+    {
+      name: "change",
+      path: "/layout",
+      components: {
+        menu: menuComponent,
+        content: contentComponent,
+        footer: footerComponent
+      }
+    }
+  ]
+  var current_router = new VueRouter({
+    mode: "history",
+    routes: current_routes
+  });
+  var app = new Vue({
+    router: current_router,
+    el: "#container"
+  });
+</script>
+</body>
+</html>

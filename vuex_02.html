@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <h3>{{counter}} {{num}}</h3>
+  <div>
+    <button @click="incrementCounter">添加</button>
+    <button @click="decrementCounter">减少</button>
+  </div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vuex"></script>
+<script>
+  let vueStore = new Vuex.Store({
+    state: {
+      counter: 0,
+      number: 100
+    },
+    mutations: {
+      increment: function (state) {
+        state.counter++;
+        state.number++;
+      },
+      decrement: function (state) {
+        state.counter--;
+        state.number--;
+      }
+    }
+  });
+  let app = new Vue({
+    el: "#container",
+    store: vueStore,
+    computed: Vuex.mapState({
+      counter: function () {
+        return this.$store.state.counter;
+      },
+      num: "number"
+    }),
+    methods: {
+      incrementCounter: function () {
+        this.$store.commit("increment");
+      },
+      decrementCounter: function () {
+        this.$store.commit("decrement");
+      }
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <h3>{{currentCounter}}------{{currentAddress}}</h3>
+  <p>
+    <button @click="addCounter(10)">随机增加</button>
+    <button @click="changeAddr()">改变地址</button>
+  </p>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vuex"></script>
+<script>
+  const vueStore = new Vuex.Store({
+    state: {
+      counter: 0,
+      address: "成都"
+    },
+    mutations: {
+      addCount: function (myState, payload) {
+        myState.counter += payload.number;
+      },
+      changeAddress: state => {
+        state.address = "四川";
+      }
+    },
+    actions: {
+      addCountAction: (context, payload) => {
+        return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+            context.commit("addCount", payload);
+            resolve(context.state.counter);
+          }, 1000);
+          console.log("addCount:" + payload.number);
+        });
+      },
+      changeAddressAction: ({dispatch, commit}, para) => {
+        return dispatch("addCountAction", para)
+          .then(function () {
+            commit("changeAddress");
+          })
+      }
+    }
+  });
+  var app = new Vue({
+    el: "#container",
+    store: vueStore,
+    computed: {
+      ...Vuex.mapState({
+        currentCounter: "counter",
+        currentAddress: "address"
+      })
+    },
+    methods: {
+      addCounter: function (num) {
+        var n = Math.round(Math.random() * num);
+        this.$store.dispatch("addCountAction", {
+          number: n
+        }).then(function (result) {
+          console.log("add result:" + result);
+        })
+      },
+      changeAddr: function () {
+        let num = Math.round(Math.random() * 100);
+        var parameter = {number: num};
+        this.$store.dispatch("changeAddressAction", parameter)
+          .then(function () {
+            console.log("change completed");
+          })
+      }
+    }
+  })
+</script>
+</body>
+</html>

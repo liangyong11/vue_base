@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="example">
+  <!--<h-header :level="mylevel">第一个自定义呈现例子</h-header>-->
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  Vue.component("h-header", {
+    render: function (h) {
+      return h(
+        "h" + this.level,
+        {
+          attrs: {id: "h_test"},
+          style: {color: "#FF0000"}
+        },
+        [
+          h("span", "front_"),
+          this.$slots.default,
+          h("span", "_end"),
+          this.$slots.tag
+        ]
+      );
+    },
+    props: {
+      level: {
+        type: Number,
+        required: true,
+      }
+    }
+  });
+  var vue_example = new Vue({
+    el: "#example",
+    render: function (h) {
+      return h(
+        "h-header",
+        {
+          props: {
+            level: this.mylevel
+          }
+        },
+        [
+          "第一个自定义呈现例子",
+          h("span",
+            {
+              slot:"tag"
+            },
+            "_mytag")
+        ]
+      )
+    },
+    computed: {
+      mylevel: function () {
+        return 2;
+      }
+    }
+  })
+</script>
+</body>
+</html>

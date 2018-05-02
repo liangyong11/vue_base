@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="app">
+  <my-example></my-example>
+</div>
+<div id="app2">
+  <child-example></child-example>
+</div>
+<div id="app3">
+  <test-example></test-example>
+  <test-example></test-example>
+  <test-example></test-example>
+</div>
+<div id="app4">
+  <div>total-value:{{total}}</div>
+  <button-counter :counter="total" @parent-increment="incrementTotal" @click.native="alerter"></button-counter>
+  <button-counter :counter="total" @parent-increment="incrementTotal" @click.native="alerter"></button-counter>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  Vue.component("my-example", {
+    template: "<div>this is my example</div>"
+  })
+  var app = new Vue({
+    el: "#app"
+  })
+  var child = {
+    template: "<div>this is child example</div>"
+  }
+  var app2 = new Vue({
+    el: "#app2",
+    components: {
+      'child-example': child
+    }
+  })
+  Vue.component("test-example", {
+    template: "<button @click='add'>{{count}}</button>",
+    data: function () {
+      return {
+        count: 0
+      }
+    },
+    methods: {
+      add: function () {
+        ++this.count
+      }
+    }
+  })
+  var app3 = new Vue({
+    el: "#app3"
+  })
+  Vue.component("button-counter", {
+    template: "<button @click='increment'>{{myproperty}}</button>",
+    props: ["counter"],
+    data: function () {
+      return {myproperty: this.counter}
+    },
+    methods: {
+      increment: function () {
+        this.myproperty = this.myproperty + 1;
+        this.$emit("parent-increment");
+      }
+    }
+  })
+  var app4 = new Vue({
+    el: "#app4",
+    data: {
+      total: 0
+    },
+    methods: {
+      incrementTotal: function () {
+        this.total += 1;
+      },
+      alerter:function () {
+        console.log(this.total);
+      }
+    }
+  })
+</script>
+</body>
+</html>

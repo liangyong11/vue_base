@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style rel="stylesheet">
+    .router-link-active {
+      color: #FF0000;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <h3>Hello Vue-Router</h3>
+  <p>
+    <router-link to="/TestA">Go to A</router-link>
+    <br>
+    <router-link to="/TestB">Go to B</router-link>
+  </p>
+  <router-view></router-view>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  const componentA = {template: '<div>this is content with a</div>'}
+  const componentB = {template: '<div>this is content with b</div>'}
+
+  const current_routes = [
+    {
+      path: '/TestA', component: componentA
+    },
+    {
+      path: '/TestB', component: componentB
+    }
+  ]
+
+  const current_router = new VueRouter({
+    routes: current_routes
+  })
+
+  var app = new Vue({
+    el: "#container",
+    router: current_router
+  })
+  //.$mount('#container')
+</script>
+</body>
+</html>

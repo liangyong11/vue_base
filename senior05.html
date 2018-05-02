@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="example" v-color="color" v-back-color="backgroundColor">
+  这是一个关于自定义指令的测试例子
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  Vue.directive("color", function (el, binding) {
+    el.style.color = binding.value;
+  })
+  var app = new Vue({
+    el: "#example",
+    data: {
+      color: "red",
+      backgroundColor: "blue"
+    },
+    directives: {
+      backColor: function (el, binding) {
+        el.style.backgroundColor = binding.value
+      }
+      /*, backcolor: {
+        bind: function (el, binding) {
+          el.style.backgroundColor = binding.value;
+        },
+        update: function (el, binding) {
+          el.style.backgroundColor = binding.value;
+        }
+      }*/
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <child-element>
+    <template slot="first" scope="attr">
+      <span>from first</span>
+      <br/>
+      <span>{{attr.text}}</span>
+      <br/>
+      <span>{{attr.url}}</span>
+    </template>
+    <template slot="second" scope="pro">
+      <span>from second</span>
+      <br/>
+      <span>{{pro.text}}</span>
+      <br/>
+      <span>{{pro.age}}</span>
+    </template>
+  </child-element>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+  Vue.component("child-element", {
+    render: function (h) {
+      return h(
+        "div",
+        {
+          class: {
+            "class-div": true
+          }
+        },
+        [
+          h("hr"),
+          h("div", [
+            this.$scopedSlots.first({
+              text: "this is text",
+              url: "www.google.com"
+            })]),
+          h("hr"),
+          this.$scopedSlots.second({
+            text: "this is text2",
+            url: "www.google.com",
+            age: 30
+          })
+        ]
+      )
+    }
+  })
+  var con = new Vue({
+    el: "#container"
+  })
+</script>
+</body>
+</html>

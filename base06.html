@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="example">
+  <input type="button" @click="clickButton" value="点击事件">
+  <input type="button" @click="clickEvent($data.count)" value="数字点击">
+  <input type="button" @click.once="preventEvent('阻止',$event)" value="事件阻止">
+  <input type="text" @keyup.enter="enterEvent" v-model="text">
+  <input type="button" @click.shift="shiftEvent" value="shift操作">
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+    var app=new Vue({
+      el:"#example",
+      data:{
+          content:"my example",
+          count:100,
+          text:"文字内容"
+      },
+      methods: {
+        clickButton: function (event) {
+          console.log(this.content);
+          console.info(event);
+          console.log(event.target.tagName);
+        },
+        clickEvent: function (number) {
+          number++;
+          console.log(number);
+        },
+        preventEvent:function (message,event) {
+          if(event){
+              event.preventDefault();
+              event.stopPropagation();
+              alert(message);
+          }
+        },
+        enterEvent:function () {
+          alert(this.text);
+        },
+        shiftEvent:function () {
+          alert(this.content);
+        }
+      }
+    })
+</script>
+</body>
+</html>

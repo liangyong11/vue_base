@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style rel="stylesheet">
+    .router-link-active {
+      color: #FF0000;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <h3>Hello Vue-Router---动态匹配</h3>
+  <p>
+    <router-link to="/TestA/5">Go to A----5</router-link>
+    <br>
+    <router-link to="/TestA/six">Go to A----six</router-link>
+    <br>
+    <router-link to="/TestA">Go to A----base</router-link>
+    <br>
+    <router-link to="/TestB/liangy">Go to B---liangy</router-link>
+    <br>
+    <router-link to="/TestB/小梁">Go to B---小梁</router-link>
+  </p>
+  <router-view></router-view>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  const componentBase = {template: '<div>this is content with base</div>'}
+  const componentA = {template: '<div>this is content with a {{$route.params.id}}</div>'}
+  const componentB = {template: '<div>this is content with b {{$route.params.name}}</div>'}
+
+  const current_routes = [
+    {
+        path:'/TestA',component:componentBase
+    },
+    {
+      path: '/TestA/:id', component: componentA
+    },
+    {
+      path: '/TestB/:name', component: componentB
+    }
+  ]
+
+  const current_router = new VueRouter({
+    routes: current_routes
+  })
+
+  var app = new Vue({
+    router: current_router
+  }).$mount('#container')
+</script>
+</body>
+</html>

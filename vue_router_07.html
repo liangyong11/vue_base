@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<div id="container">
+  <h3>VueRouter--重定向</h3>
+  <div>
+    <router-link to="/first">First Link</router-link>
+    <br>
+    <router-link to="/second">Second Link</router-link>
+    <br>
+    <router-link to="/third">Third Link</router-link>
+  </div>
+  <router-view></router-view>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  const firstComponent = {
+    template: "<div>this is the first component</div>"
+  };
+  const secondComponent = {
+    template: "<div>this is the second component</div>"
+  };
+  const fourthComponent = {
+    template: "<div>this is the fourth component</div>"
+  }
+  var myRoutes = [
+    {
+      name: "first_route",
+      path: "/first",
+      component: firstComponent
+    },
+    {
+      name: "second_route",
+      path: "/second",
+      redirect: "/first"
+    },
+    {
+      name: "third_route",
+      path: "/third",
+      redirect: {name: "fourth_route"}
+    },
+    {
+      name: "fourth_route",
+      path: "/fourth",
+      component: fourthComponent
+    }
+  ];
+  var myRouter = new VueRouter({
+    routes: myRoutes
+  });
+  var myapp = new Vue({
+    router: myRouter,
+    el: "#container"
+  });
+</script>
+</body>
+</html>
