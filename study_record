@@ -21,3 +21,4 @@ slot的使用中,子组件<slot name="slot_name">,父组件中<div slot="slot_na
 render函数三个参数(0:tag,1:{},2:[]),在对象配置中,props可以用于绑定,如(level:this.level),接受当前组件的data computed methods方式返回
 render函数可以完全替换原有的子组件模板和父组件模板,具体内容可以参考senior01<----->senior04部分,传值方面内容非常详细
 router的路由和子路由都拥有同一个名称的参数时(比如id),会以路径的后面id值为标准来重写上级参数,因此会造成问题,所以定义子路由时,参数名必须与父路由不相同
+new Vue()对象，可以作为bus事件总线，$on方法进行事件订阅，$emit方法进行事件触发
